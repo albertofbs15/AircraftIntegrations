@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:aircratline-message
+	xmlns:tns="http://aerolineas-latinoamericanas/contract/messages">
+	<tns:departure-airport>BOGOTA</tns:departure-airport>
+	<tns:arrival-airport>CALI</tns:arrival-airport>
+	<tns:tail-number>MK00012</tns:tail-number>
+	<tns:flight-leg external-key="MK00012-20170828-01" status="SCHEDULED">
+		<tns:operational-info>
+			<tns:departure-airport>BOGOTA</tns:departure-airport>
+			<tns:arrival-airport>CARTAGENA</tns:arrival-airport>
+		</tns:operational-info>
+		<tns:scheduled-info>
+			<tns:estimated-outgate>BOG-GT01</tns:estimated-outgate>
+			<tns:estimated-ingate>CART-GT01</tns:estimated-ingate>
+			<tns:estimated-outgate-time>2017-08-28T06:00:00</tns:estimated-outgate-time>
+			<tns:estimated-ingate-time>2017-08-28T07:30:00</tns:estimated-ingate-time>
+		</tns:scheduled-info>
+	</tns:flight-leg>
+	<tns:flight-leg external-key="MK00012-20170828-02" status="SCHEDULED">
+		<tns:operational-info>
+			<tns:departure-airport>CARTAGENA</tns:departure-airport>
+			<tns:arrival-airport>MEDELLIN</tns:arrival-airport>
+		</tns:operational-info>
+		<tns:scheduled-info>
+			<tns:estimated-outgate>CAR-GT03</tns:estimated-outgate>
+			<tns:estimated-ingate>MED-GT01</tns:estimated-ingate>
+			<tns:estimated-outgate-time>2017-08-28T08:00:00</tns:estimated-outgate-time>
+			<tns:estimated-ingate-time>2017-08-28T09:30:00</tns:estimated-ingate-time>
+		</tns:scheduled-info>
+	</tns:flight-leg>
+	<tns:flight-leg external-key="MK00012-20170828-03" status="SCHEDULED">
+		<tns:operational-info>
+			<tns:departure-airport>MEDELLIN</tns:departure-airport>
+			<tns:arrival-airport>CALI</tns:arrival-airport>
+		</tns:operational-info>
+		<tns:scheduled-info>
+			<tns:estimated-outgate>MED-GT09</tns:estimated-outgate>
+			<tns:estimated-ingate>CAL-GT01</tns:estimated-ingate>
+			<tns:estimated-outgate-time>2017-08-28T10:00:00</tns:estimated-outgate-time>
+			<tns:estimated-ingate-time>2017-08-28T11:30:00</tns:estimated-ingate-time>
+		</tns:scheduled-info>
+	</tns:flight-leg>
+</tns:aircratline-message>
