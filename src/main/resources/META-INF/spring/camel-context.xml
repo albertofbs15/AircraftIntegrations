@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:cxf="http://camel.apache.org/schema/cxf"
+	xsi:schemaLocation="
+http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd	
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<context:component-scan base-package="co.com.foundation.javeriana.il.controllers" />
+
+	<camel:camelContext
+		xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
+
+		<camel:route id="file-integration">
+
+			<camel:from uri="activemq:queue:IL.FLIGHTS.REQUEST.QUEUE" />
+			<camel:log message="[ESB LOG] ------------------ message processed" />
+
+			<camel:choice>
+
+				<camel:when>
+					<camel:simple>${bean:routerConditions?method=filter}</camel:simple>
+					<camel:to uri="xslt:transformations/outgate-transformer.xsl" />
+					<camel:to uri="activemq:queue:IL.FLIGHTS.RESPONSE.QUEUE" />
+				</camel:when>
+
+				<camel:otherwise>
+					<camel:to uri="bean:routerConditions?method=transform" />
+					<camel:to uri="file:/opt/il/output-otros?fileName=output.txt" />
+				</camel:otherwise>
+
+			</camel:choice>
+
+		</camel:route>
+
+
+		<!-- SOAP WS ROUTE -->
+		<camel:route id="soap-integration">
+			<camel:from uri="cxf:bean:flightsApi?dataFormat=MESSAGE"/>
+			<camel:log message="[ESB LOG] ------------------ SOAP message processed" />
+			<camel:to uri="file:/opt/il/flights-package?fileName=flights.txt" />
+			
+			<camel:setBody>
+				<camel:simple>resource:classpath:static/response.xml</camel:simple>
+			</camel:setBody>
+			
+		</camel:route>
+
+
+	</camel:camelContext>
+
+
+	<!-- soap configuration -->
+
+	<cxf:cxfEndpoint id="flightsApi"
+		address="http://localhost:9000/aes-pica/flights" 
+		wsdlURL="contracts/flights-contract.wsdl" serviceName="s:flights-contract" 
+		endpointName="s:flights-contractSOAP"
+		xmlns:s="http://www.javeriana.edu/flights-contract/"/>
+
+	<!-- mq configuration -->
+
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="8" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="concurrentConsumers" value="10" />
+	</bean>
+	<bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+	</bean>
+
+
+</beans>

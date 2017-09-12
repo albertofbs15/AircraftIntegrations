@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:flight-leg-message
+	xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
+	<p:assign-tail-number>AH-111</p:assign-tail-number>
+	<p:flight-leg>
+		<p:flight-attributes>
+			<p:external-key>AH00001</p:external-key>
+			<p:flight-name>dallas-to-bogota</p:flight-name>
+			<p:status>OUTGATE</p:status>
+		</p:flight-attributes>
+		<p:aircraft>
+			<p:barcode>MRO</p:barcode>
+			<p:aircraft-registration-code>p:aircraft-registration-code</p:aircraft-registration-code>
+		</p:aircraft>
+		<p:usages>
+			<p:usage>
+				<p:usage-parm>p:usage-parm</p:usage-parm>
+				<p:delta>0.0</p:delta>
+				<p:tsn>0.0</p:tsn>
+			</p:usage>
+		</p:usages>
+		<p:airports>
+			<p:departure-airport>dallas</p:departure-airport>
+			<p:arrival-airport>bogota</p:arrival-airport>
+		</p:airports>
+		<p:dates>
+			<p:scheduled-departure-date>p:scheduled-departure-date</p:scheduled-departure-date>
+			<p:scheduled-arrival-date>p:scheduled-arrival-date</p:scheduled-arrival-date>
+		</p:dates>
+	</p:flight-leg>
+</p:flight-leg-message>

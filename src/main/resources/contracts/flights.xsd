@@ -1,0 +1,296 @@
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by user (MXI Technologies Ltd.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0" targetNamespace="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+			<p>Flight Record XML Schema Document</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="flight-leg-message">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Message Root. Contains list of flight.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="assign-tail-number" type="xs:string"/>
+				<xs:element name="flight-leg" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Single Flight</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="flight-attributes">
+								<xs:annotation>
+									<xs:documentation>Details of Maintenix Flight</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="external-key">
+											<xs:annotation>
+												<xs:documentation>Identifier used by external systems when referencing the flight.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="80"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="flight-name">
+											<xs:annotation>
+												<xs:documentation>Flight event name.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="80"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="master-flight-no" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>The name used to label the flight (or flight legs) under one flight plan number.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="80"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="operation-type" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Flight operations type code.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="8"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="description" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Flight description.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="4000"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="status">
+											<xs:annotation>
+												<xs:documentation>Flight OOOI status</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="80"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="aircraft">
+								<xs:annotation>
+									<xs:documentation>aircraft for the flight</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="barcode">
+											<xs:annotation>
+												<xs:documentation>Barcode for the aircraft inventory item.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="80"/>
+													<xs:minLength value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="aircraft-registration-code">
+											<xs:annotation>
+												<xs:documentation>The registration code for the aircraft - IATA country letter followed by unique identifier.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:minLength value="1"/>
+													<xs:maxLength value="10"/>
+													<xs:pattern value=""/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="usages" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Usage accrued from flight</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="usage" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Collection of usage accruals for the aircraft</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="usage-parm">
+														<xs:annotation>
+															<xs:documentation>Usage data type.</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="80"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="delta" type="xs:double">
+														<xs:annotation>
+															<xs:documentation>Usage delta value for the flight.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="tsn" type="xs:double">
+														<xs:annotation>
+															<xs:documentation>Current total "Time Since New" usage value for a component.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="tso" type="xs:double" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Current total "Time Since Overhauled" usage value for a component.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="tsi" type="xs:double" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Current total "Time Since Install" usage value for a component.  It is reset to 0 when a component is installed, and it accumulates usage just like TSN and TSO. </xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="airports">
+								<xs:annotation>
+									<xs:documentation>Airport locations</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="departure-airport">
+											<xs:annotation>
+												<xs:documentation>Departure airport location.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="2000"/>
+													<xs:minLength value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="arrival-airport">
+											<xs:annotation>
+												<xs:documentation>Arrival aiport location.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="2000"/>
+													<xs:minLength value="1"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="departure-gate" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>The gate at the departure airport.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="8"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="arrival-gate" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>The gate at the arrival airport.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:maxLength value="8"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="dates">
+								<xs:annotation>
+									<xs:documentation>Flight event dates</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="scheduled-departure-date">
+											<xs:annotation>
+												<xs:documentation>Scheduled local time to start the event.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="scheduled-arrival-date">
+											<xs:annotation>
+												<xs:documentation>Scheduled local time to complete the event.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="actual-departure-date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Actual local time the event started.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="actual-arrival-date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Tiime that the event actually ended. </xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="up-date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Time for weight off wheels.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="down-date" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Time for weight on wheels.</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})?"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

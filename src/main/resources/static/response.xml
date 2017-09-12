@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:flig="http://www.javeriana.edu/flights-contract/">
+	<soapenv:Header />
+	<soapenv:Body>
+		<flig:processFlightsResponse>
+			<out>0000001</out>
+		</flig:processFlightsResponse>
+	</soapenv:Body>
+</soapenv:Envelope>
