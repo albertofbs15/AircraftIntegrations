@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://aerolineas-latinoamericanas/contract/messages"
+	xmlns:tns="http://aerolineas-latinoamericanas/contract/messages"
+	elementFormDefault="qualified">
+
+	<element name="aircratline-message">
+		<complexType>
+			<sequence>
+				<element name="departure-airport" type="string" />
+				<element name="arrival-airport" type="string" />	
+				<element name="tail-number" type="string" />
+				<element name="flight-leg" type="tns:flight-leg" minOccurs="0"
+					maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="flight-leg">
+		<sequence>
+			<element name="operational-info" type="tns:operational-info" />
+			<element name="scheduled-info" type="tns:scheduled-info" />
+			<element name="domain-events-info" type="tns:domain-events-info" />
+		</sequence>
+		<attribute name="external-key" type="string" />
+		<attribute name="status" type="tns:flight-status" />
+		<attribute name="version" type="int" />
+	</complexType>
+
+	<complexType name="operational-info">
+		<sequence>
+			<element name="departure-airport" type="string" />
+			<element name="arrival-airport" type="string" />
+		</sequence>
+	</complexType>
+
+	<complexType name="scheduled-info">
+		<sequence>
+			<element name="estimated-outgate" type="string" />
+			<element name="estimated-ingate" type="string" />
+			<element name="estimated-outgate-time" type="date" />
+			<element name="estimated-ingate-time" type="date" />
+		</sequence>
+	</complexType>
+
+	<complexType name="domain-events-info">
+		<sequence>
+			<element name="alert-on-air">
+				<complexType>
+					<sequence>
+						<element name="description" type="string" />
+						<element name="alert-type" type="tns:alert-type" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="on-air-shopping">
+				<complexType>
+					<sequence>
+						<element name="description" type="string" />
+						<element name="credit-card-number" type="string" />
+						<element name="value" type="long" />
+						<element name="transaction-date" type="date" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="actual-outgate">
+				<complexType>
+					<sequence>
+						<element name="date" type="date" />
+						<element name="gate-code" type="string" />
+						<element name="fuel-percentage" type="int" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="actual-ingate">
+				<complexType>
+					<sequence>
+						<element name="date" type="date" />
+						<element name="gate-code" type="string" />
+						<element name="fuel-percentage" type="int" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="estimated-outgate">
+				<complexType>
+					<sequence>
+						<element name="date" type="date" />
+						<element name="gate-code" type="string" />
+						<element name="fuel-percentage" type="int" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="estimated-ingate">
+				<complexType>
+					<sequence>
+						<element name="date" type="date" />
+						<element name="gate-code" type="string" />
+						<element name="fuel-percentage" type="int" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="cancel-flight">
+				<complexType>
+					<sequence>
+						<element name="description" type="string" />
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<simpleType name="alert-type" final="restriction">
+		<restriction base="string">
+			<enumeration value="WARNING" />
+			<enumeration value="DANGER" />
+		</restriction>
+	</simpleType>
+
+	<simpleType name="flight-status" final="restriction">
+		<restriction base="string">
+			<enumeration value="SCHEDULED" />
+			<enumeration value="IN_PROGRESS" />
+			<enumeration value="COMPLETED" />
+		</restriction>
+	</simpleType>
+
+
+</schema>

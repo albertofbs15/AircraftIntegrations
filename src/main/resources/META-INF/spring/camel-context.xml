@@ -10,8 +10,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 
 	<context:component-scan base-package="co.com.foundation.javeriana.il.controllers" />
 
-	<camel:camelContext
-		xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
+	<camel:camelContext xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
 
 		<camel:route id="file-integration">
 
@@ -41,11 +40,11 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 			<camel:from uri="cxf:bean:flightsApi?dataFormat=MESSAGE"/>
 			<camel:log message="[ESB LOG] ------------------ SOAP message processed" />
 			<camel:to uri="file:/opt/il/flights-package?fileName=flights.txt" />
-			
+
 			<camel:setBody>
 				<camel:simple>resource:classpath:static/response.xml</camel:simple>
 			</camel:setBody>
-			
+
 		</camel:route>
 
 
@@ -55,8 +54,8 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 	<!-- soap configuration -->
 
 	<cxf:cxfEndpoint id="flightsApi"
-		address="http://localhost:9000/aes-pica/flights" 
-		wsdlURL="contracts/flights-contract.wsdl" serviceName="s:flights-contract" 
+		address="http://localhost:9000/aes-pica/flights"
+		wsdlURL="contracts/flights-contract.wsdl" serviceName="s:flights-contract"
 		endpointName="s:flights-contractSOAP"
 		xmlns:s="http://www.javeriana.edu/flights-contract/"/>
 
