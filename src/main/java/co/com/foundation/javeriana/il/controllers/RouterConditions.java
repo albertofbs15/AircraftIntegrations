@@ -2,6 +2,8 @@ package co.com.foundation.javeriana.il.controllers;
 
 import java.util.function.Predicate;
 
+import co.com.foundation.javeriana.il.Data.TailNumberValidatorService;
+import co.com.foundation.javeriana.il.model.AircratlineMessage;
 import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +12,10 @@ import co.com.foundation.javeriana.il.model.FlightLegMessage;
 @Component
 public class RouterConditions {
 
-	private static Predicate<FlightLegMessage> VALID_TAIL_NUMBER = (line) -> {
-		return line.getAssignTailNumber().startsWith("AH-");
+	TailNumberValidatorService tailNumberValidatorService;
+
+	private final Predicate<AircratlineMessage> VALID_TAIL_NUMBER = (line) -> {
+		return tailNumberValidatorService.validateTailNumber(line.getTailNumber());
 	};
 	
 	public RouterConditions() {
@@ -20,8 +24,13 @@ public class RouterConditions {
 	
 	
 	public boolean filter(final Exchange exchange) {
-		
-		FlightLegMessage flm = exchange.getIn().getBody(FlightLegMessage.class);
+		AircratlineMessage flm = exchange.getIn().getBody(AircratlineMessage.class);
+		return VALID_TAIL_NUMBER.test(flm);
+	}
+
+	public boolean route(final Exchange exchange) {
+		AircratlineMessage flm = exchange.getIn().getBody(AircratlineMessage.class);
+		flm.getFlightLeg().get(0).getDomainEventsInfo().getOnAirShopping()
 		return VALID_TAIL_NUMBER.test(flm);
 	}
 	

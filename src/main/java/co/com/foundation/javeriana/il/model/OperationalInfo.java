@@ -6,7 +6,7 @@
 //
 
 
-package aerolineas_latinoamericanas.contract.messages;
+package co.com.foundation.javeriana.il.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

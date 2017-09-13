@@ -6,7 +6,7 @@
 //
 
 
-package aerolineas_latinoamericanas.contract.messages;
+package co.com.foundation.javeriana.il.model;
 
 import java.util.ArrayList;
 import java.util.List;

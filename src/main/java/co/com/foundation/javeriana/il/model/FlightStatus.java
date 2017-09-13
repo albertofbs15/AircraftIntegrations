@@ -6,39 +6,41 @@
 //
 
 
-package aerolineas_latinoamericanas.contract.messages;
+package co.com.foundation.javeriana.il.model;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for alert-type.
+ * <p>Java class for flight-status.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="alert-type">
+ * &lt;simpleType name="flight-status">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="WARNING"/>
- *     &lt;enumeration value="DANGER"/>
+ *     &lt;enumeration value="SCHEDULED"/>
+ *     &lt;enumeration value="IN_PROGRESS"/>
+ *     &lt;enumeration value="COMPLETED"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
  * 
  */
-@XmlType(name = "alert-type")
+@XmlType(name = "flight-status")
 @XmlEnum
-public enum AlertType {
+public enum FlightStatus {
 
-    WARNING,
-    DANGER;
+    SCHEDULED,
+    IN_PROGRESS,
+    COMPLETED;
 
     public String value() {
         return name();
     }
 
-    public static AlertType fromValue(String v) {
+    public static FlightStatus fromValue(String v) {
         return valueOf(v);
     }
 
