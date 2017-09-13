@@ -20,7 +20,7 @@
 		<sequence>
 			<element name="operational-info" type="tns:operational-info" />
 			<element name="scheduled-info" type="tns:scheduled-info" />
-			<element name="domain-events-info" type="tns:domain-events-info" />
+			<element name="domain-events-info" type="tns:domain-events-info" minOccurs="0"/>
 		</sequence>
 		<attribute name="external-key" type="string" />
 		<attribute name="status" type="tns:flight-status" />
@@ -30,7 +30,7 @@
 	<complexType name="operational-info">
 		<sequence>
 			<element name="departure-airport" type="string" />
-			<element name="arrival-airport" type="string" />
+			<element name="arrival-airport" type="string"/>
 		</sequence>
 	</complexType>
 
@@ -38,14 +38,14 @@
 		<sequence>
 			<element name="estimated-outgate" type="string" />
 			<element name="estimated-ingate" type="string" />
-			<element name="estimated-outgate-time" type="date" />
-			<element name="estimated-ingate-time" type="date" />
+			<element name="estimated-outgate-time" type="dateTime" />
+			<element name="estimated-ingate-time" type="dateTime" />
 		</sequence>
 	</complexType>
 
 	<complexType name="domain-events-info">
 		<sequence>
-			<element name="alert-on-air">
+			<element name="alert-on-air" minOccurs="0">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />
@@ -53,53 +53,53 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="on-air-shopping">
+			<element name="on-air-shopping" minOccurs="0">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />
 						<element name="credit-card-number" type="string" />
 						<element name="value" type="long" />
-						<element name="transaction-date" type="date" />
+						<element name="transaction-date" type="dateTime" />
 					</sequence>
 				</complexType>
 			</element>
-			<element name="actual-outgate">
+			<element name="actual-outgate" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="date" type="date" />
+						<element name="date" type="dateTime" />
 						<element name="gate-code" type="string" />
 						<element name="fuel-percentage" type="int" />
 					</sequence>
 				</complexType>
 			</element>
-			<element name="actual-ingate">
+			<element name="actual-ingate" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="date" type="date" />
+						<element name="date" type="dateTime" />
 						<element name="gate-code" type="string" />
 						<element name="fuel-percentage" type="int" />
 					</sequence>
 				</complexType>
 			</element>
-			<element name="estimated-outgate">
+			<element name="estimated-outgate" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="date" type="date" />
+						<element name="date" type="dateTime" />
 						<element name="gate-code" type="string" />
 						<element name="fuel-percentage" type="int" />
 					</sequence>
 				</complexType>
 			</element>
-			<element name="estimated-ingate">
+			<element name="estimated-ingate" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="date" type="date" />
+						<element name="date" type="dateTime" />
 						<element name="gate-code" type="string" />
 						<element name="fuel-percentage" type="int" />
 					</sequence>
 				</complexType>
 			</element>
-			<element name="cancel-flight">
+			<element name="cancel-flight" minOccurs="0">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />

@@ -30,8 +30,13 @@ public class RouterConditions {
 
 	public boolean route(final Exchange exchange) {
 		AircratlineMessage flm = exchange.getIn().getBody(AircratlineMessage.class);
-		flm.getFlightLeg().get(0).getDomainEventsInfo().getOnAirShopping()
 		return VALID_TAIL_NUMBER.test(flm);
+	}
+
+	public boolean isOnAirShopping(final Exchange exchange) {
+		AircratlineMessage flm = exchange.getIn().getBody(AircratlineMessage.class);
+		flm.getFlightLeg().get(0).getDomainEventsInfo().getOnAirShopping();
+		return true;
 	}
 	
 	public void transform(final Exchange exchange) {

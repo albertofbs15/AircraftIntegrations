@@ -36,7 +36,7 @@
 		</tns:scheduled-info>
 		<tns:domain-events-info>
 			<tns:estimated-outgate>
-				<tns:date>2017-08-28T08:10:0</tns:date>
+				<tns:date>2017-08-28T08:10:00</tns:date>
 				<tns:gate-code>CAR-GT03</tns:gate-code>
 				<tns:fuel-percentage>80</tns:fuel-percentage>
 			</tns:estimated-outgate>

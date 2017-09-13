@@ -14,74 +14,24 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 	<camel:camelContext xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
 
         <!-- FROM ACTIVEMQ TO FILE-->
-        <camel:route id="aircraftIntegrations">
+        <camel:route id="aircraftIntegrationsFilterTailNumber">
             <camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE" />
-            <camel:log message="[ESB LOG] ------------------ message processed" />
+            <camel:log message="[ESB LOG] ------------------ Filtering Tail Numbers" />
             
             <camel:filter>
                 <camel:simple>${bean:routerConditions?method=filter}</camel:simple>
-                <camel:to uri="direct:tailNumberFiltered"/>
+                <camel:to uri="direct:splitFlightLegs"/>
             </camel:filter>
         </camel:route>
 
+
         <!-- FROM ACTIVEMQ -->
-        <camel:route id="aircraftIntegrationsWithValidTailNumber">
-
-            <camel:from uri="direct:tailNumberFiltered" />
-            <camel:log message="[ESB LOG] ------------------ message tail number filtered processed" />
-
-            <camel:choice>
-
-                <camel:when>
-                    <camel:simple>${bean:routerConditions?method=filter}</camel:simple>
-                    <camel:to uri="xslt:transformations/outgate-transformer.xsl" />
-                    <camel:to uri="activemq:queue:IL.FLIGHTS.RESPONSE.QUEUE" />
-                </camel:when>
-
-                <camel:otherwise>
-                    <camel:to uri="bean:routerConditions?method=transform" />
-                    <camel:to uri="file:/opt/il/output-otros?fileName=output.txt" />
-                </camel:otherwise>
-
-            </camel:choice>
+        <camel:route id="splitFlightLegs">
+			<camel:from uri="direct:aircraftIntegrationsFilterTailNumber"/>
+            <camel:log message="[ESB LOG] ------------------ Splitting Flight Legs" />
+			<camel:to uri="file:C:\BLIZARD?fileName=output.txt" />
 
         </camel:route>
-
-        <!-- FROM ACTIVEMQ TO (ACTIVEMQ , FILE)-->
-		<camel:route id="file-integration">
-
-			<camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE" />
-			<camel:log message="[ESB LOG] ------------------ message processed" />
-
-			<camel:choice>
-
-				<camel:when>
-					<camel:simple>${bean:routerConditions?method=filter}</camel:simple>
-					<camel:to uri="xslt:transformations/outgate-transformer.xsl" />
-					<camel:to uri="activemq:queue:IL.FLIGHTS.RESPONSE.QUEUE" />
-				</camel:when>
-
-				<camel:otherwise>
-					<camel:to uri="bean:routerConditions?method=transform" />
-					<camel:to uri="file:/opt/il/output-otros?fileName=output.txt" />
-				</camel:otherwise>
-
-			</camel:choice>
-
-		</camel:route>
-
-		<!-- SOAP WS ROUTE  TO FILE-->
-		<camel:route id="soap-integration">
-			<camel:from uri="cxf:bean:flightsApi?dataFormat=MESSAGE"/>
-			<camel:log message="[ESB LOG] ------------------ SOAP message processed" />
-			<camel:to uri="file:/opt/il/flights-package?fileName=flights.txt" />
-
-			<camel:setBody>
-				<camel:simple>resource:classpath:static/response.xml</camel:simple>
-			</camel:setBody>
-
-		</camel:route>
-
 
 	</camel:camelContext>
 
@@ -97,7 +47,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 	<!-- mq configuration -->
 
 	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="brokerURL" value="tcp://localhost:61617" />
 		<property name="userName" value="admin" />
 		<property name="password" value="admin" />
 	</bean>
