@@ -14,7 +14,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 	<camel:camelContext xmlns:tns="http://aerolineas-latinoamericanas/contract/messages">
 
         <camel:route id="inMessageAndTailFilter">
-            <camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE" />
+            <camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE"/>
             <camel:log message="[ESB LOG] ------------------ Filtering Tail Numbers" />
 
             <camel:filter>
@@ -22,7 +22,6 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                 <camel:to uri="direct:splitFlightLegs"/>
             </camel:filter>
         </camel:route>
-
 
         <camel:route id="splitFlightLegs">
 			<camel:from uri="direct:splitFlightLegs"/>
@@ -38,7 +37,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 			</camel:split>
         </camel:route>
 
-        <camel:route>
+        <camel:route id="blizard">
             <camel:from uri="direct:blizard"/>
             <camel:choice>
                 <camel:when>
@@ -47,24 +46,25 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                     <camel:log message="[ESB LOG] ------------------ Blizard"/>
                     <camel:bean ref="blizard"/>
 
-                    <camel:to uri="file:C:\JBOSS_BLIZARD?fileName=blizard${header.CamelSplitIndex}.txt"/>
+                    <camel:to uri="file:C:\JBOSS_BLIZARD?fileName=blizard_key_${headers.key}.txt"/>
                 </camel:when>
             </camel:choice>
         </camel:route>
 
-        <camel:route>
+        <camel:route  id="flightGuards">
             <camel:from uri="direct:flightGuards"/>
             <camel:choice>
                 <camel:when>
                     <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:alert-on-air</camel:xpath>
                     <camel:log message="[ESB LOG] ------------------ Flight Guards"/>
 
-                    <camel:to uri="stub:flightGuards"/>
+                    <!--<camel:to uri="xslt:transformations/outgate-transformer.xsl" />-->
+                    <camel:to uri="activemq:queue:IL.FLIGHTS.GUARDS.QUEUE"/>
                 </camel:when>
             </camel:choice>
         </camel:route>
 
-        <camel:route>
+        <camel:route id="trax">
             <camel:from uri="direct:trax"/>
             <camel:choice>
                 <camel:when>
@@ -86,7 +86,6 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 		xmlns:s="http://www.javeriana.edu/flights-contract/"/>
 
 	<!-- mq configuration -->
-
 	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61617" />
 		<property name="userName" value="admin" />
