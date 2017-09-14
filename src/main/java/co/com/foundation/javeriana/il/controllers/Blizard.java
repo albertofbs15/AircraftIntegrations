@@ -18,7 +18,8 @@ public class Blizard implements Processor {
 
     Logger LOGGER = LoggerFactory.getLogger(Blizard.class);
 
-    private final String LEFT_PAD = "0";
+    private final String LEFT_NUMBER_PAD = "0";
+    private final String RIGHT_STRING_PAD = " ";
     private final String DATE_FORMAT = "yyyyMMdd";
 
     public Blizard() {
@@ -32,10 +33,10 @@ public class Blizard implements Processor {
         StringBuilder line = new StringBuilder();
         final String key = getKey();
         line.append(key)
-                .append(leftPad(onAirShopping.getCreditCardNumber(), 10))
+                .append(leftPad(onAirShopping.getCreditCardNumber(), 16))
                 .append(XMLGregorianCalendarToStringFormat(onAirShopping.getTransactionDate(), DATE_FORMAT))
                 .append(leftPad("" + onAirShopping.getValue(), 5))
-                .append(leftPad(onAirShopping.getDescription(), 67))
+                .append(rigthPad(onAirShopping.getDescription(), 67))
         ;
         exchange.getIn().setBody(line.toString());
         exchange.getIn().setHeader("key", key);
@@ -46,7 +47,11 @@ public class Blizard implements Processor {
     }
 
     private String leftPad(String field, int lenght) {
-        return StringUtils.leftPad("129018", 10, LEFT_PAD);
+        return StringUtils.leftPad(field, lenght, LEFT_NUMBER_PAD);
+    }
+
+    private String rigthPad(String field, int lenght) {
+        return StringUtils.rightPad(field, lenght, RIGHT_STRING_PAD);
     }
 
 }

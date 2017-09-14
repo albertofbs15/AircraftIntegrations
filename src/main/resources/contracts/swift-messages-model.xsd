@@ -9,23 +9,35 @@
 			<sequence>
 				<element name="departure-airport" type="string" />
 				<element name="arrival-airport" type="string" />	
-				<element name="tail-number" type="string" />
+				<element name="tail-number">
+					<simpleType>
+						<restriction base="string">
+							<length value="7"/>
+						</restriction>
+					</simpleType>
+				</element>
 				<element name="flight-leg" type="tns:flight-leg" minOccurs="0"
 					maxOccurs="unbounded" />
 			</sequence>
 		</complexType>
 	</element>
 
-	<complexType name="flight-leg">
-		<sequence>
-			<element name="operational-info" type="tns:operational-info" />
-			<element name="scheduled-info" type="tns:scheduled-info" />
-			<element name="domain-events-info" type="tns:domain-events-info" minOccurs="0"/>
-		</sequence>
-		<attribute name="external-key" type="string" />
-		<attribute name="status" type="tns:flight-status" />
-		<attribute name="version" type="int" />
-	</complexType>
+    <simpleType name="regularExpresionExternalKeyRestriction">
+        <restriction base="string">
+            <pattern value="([a-z]|[A-Z]|[0-9]){7}-[0-9]{8}-[0-9]{2}"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="flight-leg">
+        <sequence>
+            <element name="operational-info" type="tns:operational-info" />
+            <element name="scheduled-info" type="tns:scheduled-info" />
+            <element name="domain-events-info" type="tns:domain-events-info" minOccurs="0"/>
+        </sequence>
+        <attribute name="external-key" type="tns:regularExpresionExternalKeyRestriction" />
+        <attribute name="status" type="tns:flight-status" />
+        <attribute name="version" type="int" />
+    </complexType>
 
 	<complexType name="operational-info">
 		<sequence>
@@ -45,7 +57,7 @@
 
 	<complexType name="domain-events-info">
 		<sequence>
-			<element name="alert-on-air" minOccurs="0">
+			<element name="alert-on-air" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />
@@ -53,7 +65,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="on-air-shopping" minOccurs="0">
+			<element name="on-air-shopping" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />
@@ -63,7 +75,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="actual-outgate" minOccurs="0">
+			<element name="actual-outgate" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="date" type="dateTime" />
@@ -72,7 +84,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="actual-ingate" minOccurs="0">
+			<element name="actual-ingate" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="date" type="dateTime" />
@@ -81,7 +93,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="estimated-outgate" minOccurs="0">
+			<element name="estimated-outgate" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="date" type="dateTime" />
@@ -90,7 +102,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="estimated-ingate" minOccurs="0">
+			<element name="estimated-ingate" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="date" type="dateTime" />
@@ -99,7 +111,7 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="cancel-flight" minOccurs="0">
+			<element name="cancel-flight" minOccurs="0" maxOccurs="1">
 				<complexType>
 					<sequence>
 						<element name="description" type="string" />
