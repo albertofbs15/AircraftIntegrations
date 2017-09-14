@@ -29,44 +29,54 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
             <camel:log message="[ESB LOG] ------------------ Splitting Flight Legs" />
 
 			<camel:split> <!--streaming="true"-->
-				<camel:xpath>/tns:aircratline-message/tns:flight-leg</camel:xpath>
-				<camel:log message="[ESB LOG] ------------------ Splitting message ${header.CamelSplitIndex}" />
-				<camel:to uri="direct:routerApp" />
+				<camel:xtokenize mode="w">/tns:aircratline-message/tns:flight-leg</camel:xtokenize>
+                <camel:multicast>
+                    <camel:to uri="direct:blizard"/>
+                    <camel:to uri="direct:flightGuards"/>
+                    <camel:to uri="direct:trax"/>
+                </camel:multicast>
 			</camel:split>
         </camel:route>
 
-		<camel:route id="routerApp">
-			<camel:from uri="direct:routerApp"/>
+        <camel:route>
+            <camel:from uri="direct:blizard"/>
+            <camel:choice>
+                <camel:when>
+                    <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:on-air-shopping</camel:xpath>
 
-			<!--<camel:log message="[ESB LOG] Body ${body}." />-->
+                    <camel:log message="[ESB LOG] ------------------ Blizard"/>
+                    <camel:bean ref="blizard"/>
 
-			<camel:choice>
-				<camel:when>
-					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:on-air-shopping</camel:xpath>
-					<camel:log message="[ESB LOG] ------------------ OnAirShopping ${body}." />
-					<camel:to id="blizardRegister" uri="bean:blizard?method=transform"/>
-					<camel:to uri="file:C:\JBOSS_BLIZARD?fileName=blizard.txt" />
-				</camel:when>
-			</camel:choice>
+                    <camel:to uri="file:C:\JBOSS_BLIZARD?fileName=blizard${header.CamelSplitIndex}.txt"/>
+                </camel:when>
+            </camel:choice>
+        </camel:route>
 
-			<camel:choice>
-				<camel:when>
-					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:alert-on-air</camel:xpath>
-					<camel:log message="[ESB LOG] ------------------ AlertOnAir ${body}." />
-				</camel:when>
-			</camel:choice>
+        <camel:route>
+            <camel:from uri="direct:flightGuards"/>
+            <camel:choice>
+                <camel:when>
+                    <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:alert-on-air</camel:xpath>
+                    <camel:log message="[ESB LOG] ------------------ Flight Guards"/>
 
-			<camel:choice>
-				<camel:when>
-					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:cancel-flight</camel:xpath>
-					<camel:log message="[ESB LOG] ------------------ CancelFlight ${body}." />
-				</camel:when>
-			</camel:choice>
-		</camel:route>
+                    <camel:to uri="stub:flightGuards"/>
+                </camel:when>
+            </camel:choice>
+        </camel:route>
 
+        <camel:route>
+            <camel:from uri="direct:trax"/>
+            <camel:choice>
+                <camel:when>
+                    <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:cancel-flight</camel:xpath>
+                    <camel:log message="[ESB LOG] ------------------ Trax"/>
+
+                    <camel:to uri="stub:trax"/>
+                </camel:when>
+            </camel:choice>
+        </camel:route>
 
 	</camel:camelContext>
-
 
 	<!-- soap configuration -->
 	<cxf:cxfEndpoint id="flightsApi"
