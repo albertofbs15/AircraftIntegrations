@@ -11,13 +11,12 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 
 	<context:component-scan base-package="co.com.foundation.javeriana.il.controllers" />
 
-	<camel:camelContext xmlns:p="http://xml.mxi.com/xsd/csi/swa/flight/flight-leg-response/1.0">
+	<camel:camelContext xmlns:tns="http://aerolineas-latinoamericanas/contract/messages">
 
-        <!-- FROM ACTIVEMQ TO FILE-->
-        <camel:route id="aircraftIntegrationsFilterTailNumber">
+        <camel:route id="inMessageAndTailFilter">
             <camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE" />
             <camel:log message="[ESB LOG] ------------------ Filtering Tail Numbers" />
-            
+
             <camel:filter>
                 <camel:simple>${bean:routerConditions?method=filter}</camel:simple>
                 <camel:to uri="direct:splitFlightLegs"/>
@@ -25,19 +24,51 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
         </camel:route>
 
 
-        <!-- FROM ACTIVEMQ -->
         <camel:route id="splitFlightLegs">
-			<camel:from uri="direct:aircraftIntegrationsFilterTailNumber"/>
+			<camel:from uri="direct:splitFlightLegs"/>
             <camel:log message="[ESB LOG] ------------------ Splitting Flight Legs" />
-			<camel:to uri="file:C:\BLIZARD?fileName=output.txt" />
 
+			<camel:split> <!--streaming="true"-->
+				<camel:xpath>/tns:aircratline-message/tns:flight-leg</camel:xpath>
+				<camel:log message="[ESB LOG] ------------------ Splitting message ${header.CamelSplitIndex}" />
+				<camel:to uri="direct:routerApp" />
+			</camel:split>
         </camel:route>
+
+		<camel:route id="routerApp">
+			<camel:from uri="direct:routerApp"/>
+
+			<!--<camel:log message="[ESB LOG] Body ${body}." />-->
+
+			<camel:choice>
+				<camel:when>
+					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:on-air-shopping</camel:xpath>
+					<camel:log message="[ESB LOG] ------------------ OnAirShopping ${body}." />
+					<camel:to id="blizardRegister" uri="bean:blizard?method=transform"/>
+					<camel:to uri="file:C:\JBOSS_BLIZARD?fileName=blizard.txt" />
+				</camel:when>
+			</camel:choice>
+
+			<camel:choice>
+				<camel:when>
+					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:alert-on-air</camel:xpath>
+					<camel:log message="[ESB LOG] ------------------ AlertOnAir ${body}." />
+				</camel:when>
+			</camel:choice>
+
+			<camel:choice>
+				<camel:when>
+					<camel:xpath>/tns:flight-leg/tns:domain-events-info/tns:cancel-flight</camel:xpath>
+					<camel:log message="[ESB LOG] ------------------ CancelFlight ${body}." />
+				</camel:when>
+			</camel:choice>
+		</camel:route>
+
 
 	</camel:camelContext>
 
 
 	<!-- soap configuration -->
-
 	<cxf:cxfEndpoint id="flightsApi"
 		address="http://localhost:9000/aes-pica/flights"
 		wsdlURL="contracts/flights-contract.wsdl" serviceName="s:flights-contract"
