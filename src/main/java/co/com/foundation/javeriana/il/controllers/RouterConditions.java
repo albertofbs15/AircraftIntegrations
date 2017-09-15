@@ -6,12 +6,14 @@ import co.com.foundation.javeriana.il.Data.TailNumberValidatorService;
 import co.com.foundation.javeriana.il.Data.TailNumberValidatorServiceLocalDataImpl;
 import co.com.foundation.javeriana.il.model.AircratlineMessage;
 import org.apache.camel.Exchange;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RouterConditions {
 
-	TailNumberValidatorService tailNumberValidatorService = new TailNumberValidatorServiceLocalDataImpl();
+	@Autowired
+	TailNumberValidatorService tailNumberValidatorService;
 
 	private final Predicate<AircratlineMessage> VALID_TAIL_NUMBER = (line) -> {
 		return tailNumberValidatorService.validateTailNumber(line.getTailNumber());

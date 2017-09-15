@@ -1,11 +1,8 @@
 package co.com.foundation.javeriana.il.Data;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.IntStream;
-
+@Component
 public class TailNumberValidatorServiceLocalDataImpl implements TailNumberValidatorService {
 
     private static final String PREFIX = "MK";
