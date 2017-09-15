@@ -14,7 +14,7 @@
 				<xsl:value-of select="/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:cancel-flight/tns:description"/>
 			</description>
             <date>
-                <xsl:value-of select="substring(/tns:aircratline-message/tns:flight-leg/@external-key,9,8)"/>
+                <xsl:value-of select="/tns:aircratline-message/@process-date"/>
             </date>
 		</cancelRequestt>
 

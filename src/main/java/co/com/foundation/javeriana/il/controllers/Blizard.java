@@ -38,6 +38,8 @@ public class Blizard implements Processor {
                 .append(leftPad("" + onAirShopping.getValue(), 5))
                 .append(rigthPad(onAirShopping.getDescription(), 67))
         ;
+
+        LOGGER.info("Processing Blizard Regiter... Id: " + key);
         exchange.getIn().setBody(line.toString());
         exchange.getIn().setHeader("key", key);
     }

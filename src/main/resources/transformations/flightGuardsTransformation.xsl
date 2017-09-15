@@ -18,7 +18,7 @@
                 <xsl:value-of select="/tns:aircratline-message/tns:tail-number"/>
 			</aircraft-tail-number>
             <incident-date>
-                <xsl:value-of select="substring(/tns:aircratline-message/tns:flight-leg/@external-key,9,8)"/>
+                <xsl:value-of select="/tns:aircratline-message/@process-date"/>
             </incident-date>
 		</security-incident>
 

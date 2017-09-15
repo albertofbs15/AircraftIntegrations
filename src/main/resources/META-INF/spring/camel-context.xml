@@ -58,6 +58,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                     <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:alert-on-air</camel:xpath>
                     <camel:log message="[ESB LOG] ------------------ Flight Guards"/>
 
+                    <camel:bean ref="enricherWithProcessDate"/>
                     <camel:to uri="xslt:transformations/flightGuardsTransformation.xsl"/>
                     <camel:to uri="activemq:queue:IL.FLIGHTS.GUARDS.QUEUE"/>
                 </camel:when>
@@ -71,6 +72,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                     <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:cancel-flight</camel:xpath>
                     <camel:log message="[ESB LOG] ------------------ Trax"/>
 
+                    <camel:bean ref="enricherWithProcessDate"/>
                     <camel:to uri="xslt:transformations/traxTransformation.xsl"/>
                     <camel:setHeader headerName="CamelHttpMethod">
                         <camel:constant>POST</camel:constant>
