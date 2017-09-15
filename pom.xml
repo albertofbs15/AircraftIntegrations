@@ -51,6 +51,11 @@
 			<version>2.17.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-http</artifactId>
+		</dependency>
+
 		<!-- testing -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
