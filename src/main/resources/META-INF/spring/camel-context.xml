@@ -71,7 +71,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                     <camel:xpath>/tns:aircratline-message/tns:flight-leg/tns:domain-events-info/tns:cancel-flight</camel:xpath>
                     <camel:log message="[ESB LOG] ------------------ Trax"/>
 
-                    <camel:to uri="stub:trax"/>
+                    <camel:to uri="rest:http://localhost:9494/mtx-sandbox-api/endpoint/rest/cancel-api/process?method=post&#38;produces=application/xml"/>
                 </camel:when>
             </camel:choice>
         </camel:route>
