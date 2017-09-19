@@ -88,13 +88,6 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 
 	</camel:camelContext>
 
-	<!-- soap configuration -->
-	<cxf:cxfEndpoint id="flightsApi"
-		address="http://localhost:9000/aes-pica/flights"
-		wsdlURL="contracts/flights-contract.wsdl" serviceName="s:flights-contract"
-		endpointName="s:flights-contractSOAP"
-		xmlns:s="http://www.javeriana.edu/flights-contract/"/>
-
 	<!-- mq configuration -->
 	<bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61617" />
