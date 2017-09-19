@@ -82,6 +82,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
                         <camel:constant>application/xml</camel:constant>
                     </camel:setHeader>
                     <camel:to uri="http://localhost:9494/mtx-sandbox-api/endpoint/rest/cancel-api/process"/>
+                    <camel:log message="[ESB LOG] ------------------ Trax Response ${body}"/>
                 </camel:when>
             </camel:choice>
         </camel:route>
