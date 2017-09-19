@@ -15,7 +15,7 @@ http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/came
 	<camel:camelContext xmlns:tns="http://aerolineas-latinoamericanas/contract/messages">
 
         <camel:route id="inMessageAndTailFilter">
-            <camel:from uri="activemq:queue:IL.FLIGHTS.SWIFT.QUEUE"/>
+            <camel:from uri="rabbitmq://localhost/swift?queue=IL.FLIGHTS.SWIFT.QUEUE"/>
             <camel:log message="[ESB LOG] ------------------ Filtering Tail Numbers" />
 
             <camel:filter>
