@@ -3,7 +3,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="#default tns">
 
 	<xsl:template match="/">
-		<cancelRequestt>
+		<cancelRequest>
 			<aircraftIdentifier>
 				<xsl:value-of select="substring(/tns:aircratline-message/tns:tail-number,3)"/>
 			</aircraftIdentifier>
@@ -16,7 +16,7 @@
             <date>
                 <xsl:value-of select="/tns:aircratline-message/@process-date"/>
             </date>
-		</cancelRequestt>
+		</cancelRequest>
 
 	</xsl:template>
 </xsl:stylesheet>
